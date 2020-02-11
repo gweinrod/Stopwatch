@@ -4,7 +4,7 @@ parameter clk_sel_1hz = 2'b00;
 parameter clk_sel_flash = 2'b01;
 parameter clk_sel_display = 2'b10;
 
-parameter count_max;
+reg [26:0] count_max;
 
 input [1:0] clk_sel;
 input clk_in;  //100MHZ
@@ -22,14 +22,14 @@ assign count_inc = count + 1;
 
 initial begin
 	count <= 0;
-	clk_out <=0;
-	clk_sel <= 0;
+	clk_out <= 0;
 
 	case(clk_sel)
-		clk_sel_1hz: count_max =  100000000;  //1hz
-		clk_sel_flash: count_max = 50000000;  //2hz
-		clk_sel_display: count_max = 200000;  //500hz
-
+		clk_sel_1hz: 		count_max <=  100000000;  //1hz
+		clk_sel_flash: 		count_max <= 50000000;  //2hz
+		clk_sel_display: 	count_max <= 200000;  //500hz
+		default:		count_max <= 0;
+	endcase
 end
 
 always@(posedge clk_in) begin
